@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
+import * as workersService from '../services/workersService';
 
 export const WorkersContext = createContext();
 
@@ -16,16 +16,11 @@ export function WorkersProvider({ children }) {
 
   const fetchWorkers = useCallback(async () => {
     try {
-      setLoading(true);
-      const { data } = await api.get('/workers');
+      const data = await workersService.getWorkers();
       setWorkers(data);
       setError(null);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          'Error al cargar trabajadores'
-      );
+      setError(err.message || 'Error al cargar trabajadores');
     } finally {
       setLoading(false);
     }
@@ -33,7 +28,7 @@ export function WorkersProvider({ children }) {
 
   const deleteWorker = async (id) => {
     try {
-      await api.delete(`/workers/${id}`);
+      await workersService.deleteWorkerById(id);
       await fetchWorkers();
       showNotification('Trabajador eliminado correctamente');
       return { success: true };

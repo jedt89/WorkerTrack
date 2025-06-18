@@ -20,7 +20,6 @@ export default function WorkerForm({ initialData, onSubmit, loading = false }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Limpiar errores al editar
     if (errors[name]) setErrors({ ...errors, [name]: '' });
   };
 

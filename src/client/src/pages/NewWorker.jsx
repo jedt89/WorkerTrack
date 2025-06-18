@@ -2,8 +2,9 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WorkersContext } from '../context/WorkersContext';
 import WorkerForm from '../components/WorkerForm';
-import api from '../services/api';
+import * as workersService from '../services/workersService';
 import { FaArrowLeft } from 'react-icons/fa';
+
 
 export default function NewWorker() {
   const { fetchWorkers } = useContext(WorkersContext);
@@ -15,17 +16,13 @@ export default function NewWorker() {
     setLoading(true);
     setSubmitError(null);
     try {
-      await api.post('/workers', formData);
+      await workersService.createWorker(formData);
       await fetchWorkers();
       navigate('/', {
         state: { successMessage: 'Trabajador creado correctamente' }
       });
     } catch (err) {
-      setSubmitError(
-        err.response?.data?.message ||
-          err.message ||
-          'Error al crear trabajador'
-      );
+      setSubmitError(err.message || 'Error al crear trabajador');
     } finally {
       setLoading(false);
     }

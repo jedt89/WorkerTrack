@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { WorkersContext } from '../context/WorkersContext';
 import WorkerForm from '../components/WorkerForm';
-import api from '../services/api';
+import * as workersService from '../services/workersService';
 import { FaArrowLeft } from 'react-icons/fa';
+
 
 export default function EditWorker() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ export default function EditWorker() {
     } else {
       const fetchWorker = async () => {
         try {
-          const { data } = await api.get(`/workers/${id}`);
+          const data = await workersService.getWorker(id);
           setInitialData(data);
         } catch (err) {
           setSubmitError(
@@ -42,17 +43,13 @@ export default function EditWorker() {
     setFormLoading(true);
     setSubmitError(null);
     try {
-      await api.put(`/workers/${id}`, formData);
+      await workersService.updateWorker(id, formData);
       await fetchWorkers();
       navigate('/', {
         state: { successMessage: 'Trabajador actualizado correctamente' }
       });
     } catch (err) {
-      setSubmitError(
-        err.response?.data?.message ||
-          err.message ||
-          'Error al actualizar trabajador'
-      );
+      setSubmitError(err.message || 'Error al actualizar trabajador');
     } finally {
       setFormLoading(false);
     }

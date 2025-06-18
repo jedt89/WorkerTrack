@@ -6,7 +6,7 @@ import { FaUserPlus, FaFileExport } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
-  const { workers, loading, error, fetchWorkers } = useContext(WorkersContext);
+  const { workers, loading, error } = useContext(WorkersContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
