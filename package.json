@@ -1,0 +1,11 @@
+{
+  "name": "workertrack",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix src/client\" \"npm run dev --prefix src/server\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
